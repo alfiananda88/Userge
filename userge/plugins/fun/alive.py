@@ -6,6 +6,7 @@
 #
 # All rights reserved.
 
+
 from pyrogram.errors.exceptions import FileIdInvalid, FileReferenceEmpty
 from pyrogram.errors.exceptions.bad_request_400 import BadRequest
 
@@ -27,10 +28,7 @@ async def alive(message: Message):
         await refresh_id()
         await sendit(LOGO_STICKER_ID, message)
     output = f"""
-**USERGE is Up and Running**
-
-       __Durable as a Serge__
-
+**Harlequinn is Running.!!!**
 • **python version** : `{versions.__python_version__}`
 • **pyrogram version** : `{versions.__pyro_version__}`
 • **userge version** : `{versions.__version__}`
@@ -43,7 +41,7 @@ async def alive(message: Message):
 
 async def refresh_id():
     global LOGO_STICKER_ID, LOGO_STICKER_REF
-    sticker = (await userge.get_messages('theUserge', 8)).sticker
+    sticker = (await userge.get_messages('HarlequinnBot', 3)).sticker
     LOGO_STICKER_ID = sticker.file_id
     LOGO_STICKER_REF = sticker.file_ref
 

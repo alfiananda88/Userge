@@ -26,7 +26,7 @@ from userge.utils import progress, take_screen_shot, humanbytes
 LOGGER = userge.getLogger(__name__)
 CHANNEL = userge.getCLogger(__name__)
 
-LOGO_PATH = 'resources/userge.png'
+LOGO_PATH = 'resources/Harlequinn.png'
 THUMB_PATH = Config.DOWN_PATH + "thumb_image.jpg"
 
 

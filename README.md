@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://github.com/UsergeTeam/Userge">
+    <a href="https://github.com/alfiananada84/Userge">
         <img src="resources/userge.png" alt="Userge">
     </a>
     <br>
@@ -93,13 +93,13 @@ async def testing(message: Message):
 
   > Finally turn on the app and check the logs (settings -> view logs) :)
 
-  [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/UsergeTeam/Userge/tree/master)
+  [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/alfiananda84/Userge/tree/master)
 
 * **Other Method** 🔧
 
   ```bash
-  # clone the repo
-  git clone https://github.com/UsergeTeam/Userge.git
+  # clone my repo
+  git clone https://github.com/Alfiananda84/Userge
   cd Userge
 
   # create virtualenv

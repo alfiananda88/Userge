@@ -35,3 +35,11 @@ urbandict==0.5
 wget
 wikipedia
 youtube_dl
+cairosvg
+coffeehouse
+deezloader
+Google-Images-Search
+justwatch
+lottie
+lyrics-extractor
+spotdl

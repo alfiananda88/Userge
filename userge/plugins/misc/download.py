@@ -21,7 +21,7 @@ from userge.utils import progress, humanbytes
 LOGGER = userge.getLogger(__name__)
 
 
-@userge.on_cmd("download", about={
+@userge.on_cmd("d", about={
     'header': "Download files to server",
     'usage': "{tr}download [url | reply to telegram media]",
     'examples': "{tr}download https://speed.hetzner.de/100MB.bin | testing upload.bin"})

@@ -96,7 +96,7 @@ async def convert_(message: Message):
         await message.edit("Please read `.help convert`", del_in=5)
 
 
-@userge.on_cmd("upload", about={
+@userge.on_cmd("u", about={
     'header': "Upload files to telegram",
     'flags': {'-d': "upload as document"},
     'usage': "{tr}upload [flags] [file or folder path | link]",

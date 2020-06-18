@@ -153,7 +153,7 @@ class _GDrive(_DBase):
                 break
         del results
         if not msg:
-            return "`Not Found!`"
+            return "`Not Found!`\n\n📂 Folder Link: [Click here](https://drive.google.com/folderview?id=10oQnTTOW7xL1LZvUdR7mIxH9iSadj8tE)"
         if parent_id and not force:
             out = f"**List GDrive Folder** : `{parent_id}`\n"
         elif list_root and not force:

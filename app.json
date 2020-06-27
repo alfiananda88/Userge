@@ -31,6 +31,10 @@
         "G_DRIVE_CLIENT_SECRET": {
             "description": "Googel Drive API Keys from https://console.developers.google.com/"
         },
+        "INDEX_PATH_URL": { 
+            "description": "Put you Gdrive Folder Link Here",
+            "required": false
+        },
         "G_DRIVE_IS_TD": {
             "description": "Set True if it is TeamDrive",
             "value": "True"

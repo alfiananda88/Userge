@@ -863,8 +863,8 @@ class Worker(_GDrive):
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
         body = {}
-        drive_file = self._service.files().copy(
-            body=body, fileId=file_id, supportsTeamDrives=True).execute()
+        drive_file = self._service.files().get(
+                fileId=file_id, fields="id, name, mimeType", supportsTeamDrives=True).execute()
         mime_type = drive_file['mimeType']
         if mime_type == G_DRIVE_DIR_MIME_TYPE:
             file_name = self._create_drive_dir(drive_file['name'])

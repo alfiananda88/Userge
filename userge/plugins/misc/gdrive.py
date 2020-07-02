@@ -862,6 +862,7 @@ class Worker(_GDrive):
             await asyncio.sleep(1)
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
+        body = {}
         drive_file = self._service.files().copy(
             body=body, fileId=file_id, supportsTeamDrives=True).execute()
         file_name = drive_file['name']

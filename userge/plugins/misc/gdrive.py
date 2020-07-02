@@ -862,10 +862,12 @@ class Worker(_GDrive):
             await asyncio.sleep(1)
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
+        file_name = os.path.basename(file_path)
+        index_url = f"{Config.INDEX_PATH_URL}/{file_name}"
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
-            out = f"**Copied Successfully** __in {m_s} seconds__\n\n{self._output}\n\n📂 Index Link: <a href='{Config.INDEX_PATH_URL}'>Click here</a>"
+            out = f"**Copied Successfully** __in {m_s} seconds__\n\n<a href='{index_url}'> {file_name}</a>"
         elif self._output is not None and self._is_canceled:
             out = self._output
         else:

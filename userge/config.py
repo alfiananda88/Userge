@@ -68,6 +68,7 @@ class Config:
     UPSTREAM_REPO = os.environ.get("UPSTREAM_REPO", "https://github.com/UsergeTeam/Userge")
     HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
     INDEX_PATH_URL = os.environ.get("INDEX_PATH_URL", None)
+    INDEX_PATH_URL = os.environ.get("INDEX_PATH_URL", None)
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
     LOAD_UNOFFICIAL_PLUGINS = bool(os.environ.get("LOAD_UNOFFICIAL_PLUGINS", False))
     CMD_TRIGGER = os.environ.get("CMD_TRIGGER", '.')

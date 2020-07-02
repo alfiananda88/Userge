@@ -865,7 +865,11 @@ class Worker(_GDrive):
         body = {}
         drive_file = self._service.files().copy(
             body=body, fileId=file_id, supportsTeamDrives=True).execute()
-        file_name = drive_file['name']
+        mime_type = drive_file['mimeType']
+        if mime_type == G_DRIVE_DIR_MIME_TYPE:
+            file_name = self._create_drive_dir(drive_file['name'])
+        else:
+            file_name = drive_file['name']
         index_url = f"{Config.INDEX_PATH_URL}/{file_name}"
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"

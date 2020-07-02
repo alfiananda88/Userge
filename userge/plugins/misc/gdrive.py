@@ -862,7 +862,7 @@ class Worker(_GDrive):
             await asyncio.sleep(1)
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
-        file_name = os.path.basename(file_path)
+        file_name = os.path.basename(file_name)
         index_url = f"{Config.INDEX_PATH_URL}/{file_name}"
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"

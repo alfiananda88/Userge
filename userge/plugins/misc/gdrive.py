@@ -843,7 +843,7 @@ class Worker(_GDrive):
 
     @creds_dec
     async def copy(self) -> None:
-        """ Copy file/folder in GDrive """
+        """Copy file/folder in GDrive"""
         if not self._parent_id:
             await self._message.edit("First set parent path by `.gset`", del_in=5)
             return
@@ -862,26 +862,17 @@ class Worker(_GDrive):
             await asyncio.sleep(1)
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
-        body = {}
-        drive_file = self._service.files().get(
-                fileId=file_id, fields="id, name, mimeType", supportsTeamDrives=True).execute()
-        mime_type = drive_file['mimeType']
-        if mime_type == G_DRIVE_DIR_MIME_TYPE:
-            file_nama = self._create_drive_dir(drive_file['name'], self._parent_id)
-            nama_file = drive_file['name']
-            index_url = f"{Config.INDEX_PATH_URL}/{nama_file}/"
-        else:
-            file_name = drive_file['name']
-        index_url = f"{Config.INDEX_PATH_URL}/{file_name}"
+        index_url = f"{Config.INDEX_PATH_URL}/{Config.DESTINATION_FOLDER}"
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
-            out = f"**Copied Successfully** __in {m_s} seconds__\n\n<a href='{index_url}'> {file_name}</a>"
+            out = f"**Copied Successfully** __in {m_s} seconds__\n\n{self._output}\n\n📂 Shareable Link: <a href='{index_url}'>Click here</a>"
         elif self._output is not None and self._is_canceled:
             out = self._output
         else:
             out = "`failed to copy.. check logs?`"
         await self._message.edit(out, disable_web_page_preview=True, log=True)
+
 
     @creds_dec
     async def move(self) -> None:

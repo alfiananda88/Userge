@@ -41,7 +41,7 @@ OAUTH_SCOPE = ["https://www.googleapis.com/auth/drive",
                "https://www.googleapis.com/auth/drive.metadata"]
 REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
 G_DRIVE_DIR_MIME_TYPE = "application/vnd.google-apps.folder"
-G_DRIVE_FILE_LINK = "📄 <a href='https://my.gdriveku.workers.dev/0:/BOT%20UPLOAD/{}'>{}</a> __({})__"
+G_DRIVE_FILE_LINK = "📄 <a href='https://my.gdriveku.workers.dev/0:/BOT%20UPLOAD{}'>{}</a> __({})__"
 G_DRIVE_FOLDER_LINK = "📁 <a href='https://my.gdriveku.workers.dev/0:/BOT%20UPLOAD/{}'>{}</a> __(folder)__"
 
 _LOG = userge.getLogger(__name__)
@@ -277,12 +277,12 @@ class _GDrive:
     def _upload(self, file_name: str) -> None:
         try:
             if os.path.isfile(file_name):
-                self._output = self._upload_file(file_name)
+                self._output = self._upload_file(file_name, self._parent_id)
             else:
                 folder_name = os.path.basename(os.path.abspath(file_name))
                 dir_id = self._create_drive_dir(folder_name, self._parent_id)
-                self._upload_dir(file_name)
-                self._output = G_DRIVE_FOLDER_LINK.format(folder_name)
+                self._upload_dir(file_name, dir_id)
+                self._output = G_DRIVE_FOLDER_LINK.format(dir_id, folder_name)
         except HttpError as h_e:
             _LOG.exception(h_e)
             self._output = h_e
@@ -454,10 +454,10 @@ class _GDrive:
             file_name = drive_file['name']
             file_id = drive_file['id']
             if mime_type == G_DRIVE_DIR_MIME_TYPE:
-                self._output = G_DRIVE_FOLDER_LINK.format(file_name)
+                self._output = G_DRIVE_FOLDER_LINK.format(file_id, file_name)
             else:
                 file_size = humanbytes(int(drive_file.get('size', 0)))
-                self._output = G_DRIVE_FILE_LINK.format(file_name, file_size)
+                self._output = G_DRIVE_FILE_LINK.format(file_id, file_name, file_size)
         except HttpError as h_e:
             _LOG.exception(h_e)
             self._output = h_e
@@ -802,7 +802,7 @@ class Worker(_GDrive):
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
-            out = f"**Uploaded Successfully** __in {m_s} seconds__\n\n{self._output}"
+            out = f"**Uploaded Successfully** __in {m_s} seconds__\n\n{self._output}\n\n📂 Index Link: <a href='{Config.INDEX_PATH_URL}'>Click here</a>"
         elif self._output is not None and self._is_canceled:
             out = self._output
         else:
@@ -863,7 +863,7 @@ class Worker(_GDrive):
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
-            out = f"**Copied Successfully** __in {m_s} seconds__\n\n{self._output}"
+            out = f"**Copied Successfully** __in {m_s} seconds__\n\n{self._output}\n\n📂 Index Link: <a href='{Config.INDEX_PATH_URL}'>Click here</a>"
         elif self._output is not None and self._is_canceled:
             out = self._output
         else:

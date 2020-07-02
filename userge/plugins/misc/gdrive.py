@@ -862,7 +862,7 @@ class Worker(_GDrive):
             await asyncio.sleep(1)
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
-        index_url = f"{Config.INDEX_PATH_URL}"
+        index_url = f"{Config.INDEX_PATH_URL}/"
         if isinstance(self._output, HttpError):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:

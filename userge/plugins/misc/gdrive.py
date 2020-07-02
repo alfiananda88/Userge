@@ -867,7 +867,9 @@ class Worker(_GDrive):
                 fileId=file_id, fields="id, name, mimeType", supportsTeamDrives=True).execute()
         mime_type = drive_file['mimeType']
         if mime_type == G_DRIVE_DIR_MIME_TYPE:
-            file_name = self._create_drive_dir(drive_file['name'], _parent_id)
+            file_name = self._create_drive_dir(drive_file['name'], self._parent_id)
+            nama_file = drive_file['name']
+            index_url = f"{Config.INDEX_PATH_URL}/{nama_file}/"
         else:
             file_name = drive_file['name']
         index_url = f"{Config.INDEX_PATH_URL}/{file_name}"

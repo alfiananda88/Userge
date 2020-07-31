@@ -35,8 +35,11 @@ async def eval_(message: Message):
     stdout, stderr, exc = None, None, None
 
     async def aexec(code):
-        exec("async def __aexec(userge, message):\n "
-             + '\n '.join(line for line in code.split('\n')))
+        exec(
+            "async def __aexec(userge, message):\n "
+            + '\n '.join(iter(code.split('\n')))
+        )
+
         return await locals()['__aexec'](userge, message)
     try:
         await aexec(cmd)
@@ -103,10 +106,7 @@ async def term_(message: Message):
         uid = geteuid()
     except ImportError:
         uid = 1
-    if uid == 0:
-        output = f"{curruser}:~# {cmd}\n"
-    else:
-        output = f"{curruser}:~$ {cmd}\n"
+    output = f"{curruser}:~# {cmd}\n" if uid == 0 else f"{curruser}:~$ {cmd}\n"
     count = 0
     while not t_obj.finished:
         count += 1

@@ -19,11 +19,9 @@ LOGO_STICKER_ID, LOGO_STICKER_REF = None, None
 async def alive(message: Message):
     await message.delete()
     try:
-        if LOGO_STICKER_ID:
-            await sendit(LOGO_STICKER_ID, message)
-        else:
+        if not LOGO_STICKER_ID:
             await refresh_id()
-            await sendit(LOGO_STICKER_ID, message)
+        await sendit(LOGO_STICKER_ID, message)
     except (FileIdInvalid, FileReferenceEmpty, BadRequest):
         await refresh_id()
         await sendit(LOGO_STICKER_ID, message)

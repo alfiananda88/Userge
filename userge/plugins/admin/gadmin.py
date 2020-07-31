@@ -31,9 +31,7 @@ async def is_admin(message: Message):
         return False
     if user_type == "administrator":
         rm_perm = check_user.can_restrict_members
-        if rm_perm:
-            return True
-        return False
+        return bool(rm_perm)
     return True
 
 
@@ -44,9 +42,7 @@ async def is_sudoadmin(message: Message):
         return False
     if user_type == "administrator":
         add_adminperm = check_user.can_promote_members
-        if add_adminperm:
-            return True
-        return False
+        return bool(add_adminperm)
     return True
 
 
@@ -925,16 +921,16 @@ async def zombie_clean(message: Message):
 
     can_clean = await is_admin(message)
 
-    if rm_delaccs:
+    del_stats = r"`Zero zombie accounts found in this chat... WOOHOO group is clean.. \^o^/`"
 
-        del_users = 0
-        del_admins = 0
-        del_total = 0
-        del_stats = r"`Zero zombie accounts found in this chat... WOOHOO group is clean.. \^o^/`"
+    del_users = 0
+    if rm_delaccs:
 
         if can_clean:
 
             await message.edit("`Hang on!! cleaning zombie accounts from this chat..`")
+            del_admins = 0
+            del_total = 0
             async for member in userge.iter_chat_members(chat_id):
 
                 if member.user.is_deleted:
@@ -976,8 +972,6 @@ async def zombie_clean(message: Message):
 
     else:
 
-        del_users = 0
-        del_stats = r"`Zero zombie accounts found in this chat... WOOHOO group is clean.. \^o^/`"
         await message.edit("`🔎 Searching for zombie accounts in this chat..`")
         async for member in userge.iter_chat_members(chat_id):
 
@@ -1026,19 +1020,19 @@ async def pin_msgs(message: Message):
     user_type = check_user.status
     can_pin = None
 
-    silent_pin = '-s' in flags
-    unpin_pinned = '-u' in flags
-
-    if user_type == "member":
-        can_pin = get_group.permissions.can_pin_messages
-
-    elif user_type == "administrator":
+    if user_type == "administrator":
         can_pin = check_user.can_pin_messages
+
+    elif user_type == "member":
+        can_pin = get_group.permissions.can_pin_messages
 
     else:
         can_pin = True
 
     if can_pin:
+
+        silent_pin = '-s' in flags
+        unpin_pinned = '-u' in flags
 
         if unpin_pinned:
 
@@ -1117,19 +1111,19 @@ async def chatpic_func(message: Message):
     user_type = check_user.status
     change_chatpic = None
 
-    gpic_set = '-s' in flags
-    gpic_del = '-d' in flags
-
-    if user_type == "member":
-        change_chatpic = False
-
-    elif user_type == "administrator":
+    if user_type == "administrator":
         change_chatpic = check_user.can_change_info
+
+    elif user_type == "member":
+        change_chatpic = False
 
     else:
         change_chatpic = True
 
     if change_chatpic:
+
+        gpic_set = '-s' in flags
+        gpic_del = '-d' in flags
 
         if gpic_set:
 
@@ -1227,9 +1221,9 @@ async def smode_switch(message: Message):
     seconds = flags.get('-s', 0)
     minutes = flags.get('-m', 0)
     hours = flags.get('-h', 0)
-    smode_off = '-o' in flags
-
     if can_do_smode:
+
+        smode_off = '-o' in flags
 
         if seconds:
             try:

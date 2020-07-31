@@ -320,23 +320,7 @@ async def send_proper_type(message: Message,
     if os.path.exists(THUMB_PATH):
         thumb = THUMB_PATH
     tmp_msgs = []
-    if file_type == 'audio':
-        duration = 0
-        if os.path.exists(media):
-            duration = extractMetadata(createParser(media)).get("duration").seconds
-        msg = await userge.send_audio(chat_id=message.chat.id,
-                                      audio=media,
-                                      file_ref=file_ref,
-                                      caption=caption,
-                                      duration=duration,
-                                      thumb=thumb,
-                                      reply_to_message_id=message.message_id)
-
-        file_id = msg.audio.file_id
-        file_ref = msg.audio.file_ref
-        tmp_msgs.append(msg)
-
-    elif file_type == 'animation':
+    if file_type == 'animation':
         duration = 0
         if os.path.exists(media):
             duration = extractMetadata(createParser(media)).get("duration").seconds
@@ -351,8 +335,20 @@ async def send_proper_type(message: Message,
                                           reply_to_message_id=message.message_id)
         file_id = msg.animation.file_id
         file_ref = msg.animation.file_ref
-        tmp_msgs.append(msg)
+    elif file_type == 'audio':
+        duration = 0
+        if os.path.exists(media):
+            duration = extractMetadata(createParser(media)).get("duration").seconds
+        msg = await userge.send_audio(chat_id=message.chat.id,
+                                      audio=media,
+                                      file_ref=file_ref,
+                                      caption=caption,
+                                      duration=duration,
+                                      thumb=thumb,
+                                      reply_to_message_id=message.message_id)
 
+        file_id = msg.audio.file_id
+        file_ref = msg.audio.file_ref
     elif file_type == 'photo':
         msg = await userge.send_photo(chat_id=message.chat.id,
                                       photo=media,
@@ -361,8 +357,6 @@ async def send_proper_type(message: Message,
                                       reply_to_message_id=message.message_id)
         file_id = msg.photo.file_id
         file_ref = msg.photo.file_ref
-        tmp_msgs.append(msg)
-
     elif file_type == 'sticker':
         msg = await userge.send_sticker(chat_id=message.chat.id,
                                         sticker=media,
@@ -372,22 +366,21 @@ async def send_proper_type(message: Message,
             tmp_msgs.append(await message.reply(caption))
         file_id = msg.sticker.file_id
         file_ref = msg.sticker.file_ref
-        tmp_msgs.append(msg)
-
-    elif file_type == 'voice':
+    elif file_type == 'video':
         duration = 0
         if os.path.exists(media):
             duration = extractMetadata(createParser(media)).get("duration").seconds
-        msg = await userge.send_voice(chat_id=message.chat.id,
-                                      voice=media,
+            if not thumb:
+                thumb = take_screen_shot(media, duration)
+        msg = await userge.send_video(chat_id=message.chat.id,
+                                      video=media,
                                       file_ref=file_ref,
                                       caption=caption,
                                       duration=duration,
+                                      thumb=thumb,
                                       reply_to_message_id=message.message_id)
-        file_id = msg.voice.file_id
-        file_ref = msg.voice.file_ref
-        tmp_msgs.append(msg)
-
+        file_id = msg.video.file_id
+        file_ref = msg.video.file_ref
     elif file_type == 'video_note':
         duration = 0
         if os.path.exists(media):
@@ -404,25 +397,18 @@ async def send_proper_type(message: Message,
             tmp_msgs.append(await message.reply(caption))
         file_id = msg.video_note.file_id
         file_ref = msg.video_note.file_ref
-        tmp_msgs.append(msg)
-
-    elif file_type == 'video':
+    elif file_type == 'voice':
         duration = 0
         if os.path.exists(media):
             duration = extractMetadata(createParser(media)).get("duration").seconds
-            if not thumb:
-                thumb = take_screen_shot(media, duration)
-        msg = await userge.send_video(chat_id=message.chat.id,
-                                      video=media,
+        msg = await userge.send_voice(chat_id=message.chat.id,
+                                      voice=media,
                                       file_ref=file_ref,
                                       caption=caption,
                                       duration=duration,
-                                      thumb=thumb,
                                       reply_to_message_id=message.message_id)
-        file_id = msg.video.file_id
-        file_ref = msg.video.file_ref
-        tmp_msgs.append(msg)
-
+        file_id = msg.voice.file_id
+        file_ref = msg.voice.file_ref
     else:
         msg = await userge.send_document(chat_id=message.chat.id,
                                          document=media,
@@ -432,7 +418,7 @@ async def send_proper_type(message: Message,
                                          reply_to_message_id=message.message_id)
         file_id = msg.document.file_id
         file_ref = msg.document.file_ref
-        tmp_msgs.append(msg)
+    tmp_msgs.append(msg)
 
     if Config.WELCOME_DELETE_TIMEOUT:
         await asyncio.sleep(Config.WELCOME_DELETE_TIMEOUT)

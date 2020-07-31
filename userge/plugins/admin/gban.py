@@ -26,18 +26,14 @@ async def is_admin(message: Message, me_id):
         return False
     if user_type == "administrator":
         rm_perm = check_user.can_restrict_members
-        if rm_perm:
-            return True
-        return False
+        return bool(rm_perm)
     return True
 
 
 async def guadmin_check(chat_id, user_id) -> bool:
     check_status = await userge.get_chat_member(chat_id=chat_id, user_id=user_id)
     admin_strings = ["creator", "administrator"]
-    if check_status.status not in admin_strings:
-        return False
-    return True
+    return check_status.status in admin_strings
 
 
 @userge.on_cmd("gban", about={
@@ -311,11 +307,10 @@ async def list_white(message: Message):
     ~Filters.me & Filters.group & Filters.new_chat_members, group=1)
 async def gban_at_entry(message: Message):
     try:
-        if message.service:
-            if message.new_chat_members:
-                chat_id = message.chat.id
-                user_id = message.new_chat_members[0].id
-                firstname = message.new_chat_members[0].first_name
+        if message.service and message.new_chat_members:
+            chat_id = message.chat.id
+            user_id = message.new_chat_members[0].id
+            firstname = message.new_chat_members[0].first_name
     except Exception:
         return  # Nu use to continue if u can't get id of user from message 🤔
 

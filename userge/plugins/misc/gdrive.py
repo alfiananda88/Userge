@@ -188,8 +188,6 @@ class _GDrive(_DBase):
             response = None
             while response is None:
                 status, response = u_file_obj.next_chunk()
-                if self._is_canceled:
-                    raise ProcessCanceled
                 if status:
                     f_size = status.total_size
                     diff = time.time() - c_time
@@ -288,7 +286,7 @@ class _GDrive(_DBase):
             d_file_obj = MediaIoBaseDownload(d_f, request, chunksize=50*1024*1024)
             c_time = time.time()
             done = False
-            while done is False:
+            while not done:
                 status, done = d_file_obj.next_chunk()
                 if self._is_canceled:
                     raise ProcessCanceled
@@ -805,7 +803,7 @@ class Worker(_GDrive):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
             out = f"**Uploaded Successfully** __in {m_s} seconds__\n\n<a href='{Config.INDEX_PATH_URL}'>{self._output}</a>"
-        elif self._output is not None and self._is_canceled:
+        elif self._output is not None:
             out = self._output
         else:
             out = "`failed to upload.. check logs?`"
@@ -835,7 +833,7 @@ class Worker(_GDrive):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
             out = f"**Downloaded Successfully** __in {m_s} seconds__\n\n`{self._output}`"
-        elif self._output is not None and self._is_canceled:
+        elif self._output is not None:
             out = self._output
         else:
             out = "`failed to download.. check logs?`"
@@ -866,7 +864,7 @@ class Worker(_GDrive):
             out = f"**ERROR** : `{self._output._get_reason()}`"
         elif self._output is not None and not self._is_canceled:
             out = f"**Copied Successfully** __in {m_s} seconds__\n\n<a href='{Config.INDEX_PATH_URL}'>{self._output}</a>"
-        elif self._output is not None and self._is_canceled:
+        elif self._output is not None:
             out = self._output
         else:
             out = "`failed to copy.. check logs?`"

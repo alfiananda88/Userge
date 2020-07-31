@@ -378,10 +378,7 @@ async def copypasta(message: Message):
         elif owo.lower() == b_char:
             reply_text += "🅱️"
         else:
-            if bool(getrandbits(1)):
-                reply_text += owo.upper()
-            else:
-                reply_text += owo.lower()
+            reply_text += owo.upper() if bool(getrandbits(1)) else owo.lower()
     reply_text += choice(EMOJIS)
     await message.edit(reply_text)
 
@@ -433,7 +430,7 @@ async def zal_(message: Message):
         if not charac.isalpha():
             reply_text.append(charac)
             continue
-        for _ in range(0, 3):
+        for _ in range(3):
             randint_ = randint(0, 2)
             if randint_ == 0:
                 charac = charac.strip() + choice(ZALG_LIST[0]).strip()

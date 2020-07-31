@@ -327,7 +327,7 @@ async def view_perm(message: Message):
     v_perm = await userge.get_chat(message.chat.id)
 
     def convert_to_emoji(val: bool):
-        if val is True:
+        if val:
             return "✅"
         return "❌"
 
